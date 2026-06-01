@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="The Residence" />
+<meta name="theme-color" content="#333333" />
+<link rel="apple-touch-icon" href="data:image/png;base64,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" />
+<title>The Residence — Domestic Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream:   #FCF3EA;
+  --cream2:  #f5ede0;
+  --cream3:  #ede4d2;
+  --parch:   #D9E9D9;
+  --warm:    #97AA6A;
+  --brown:   #5a7a3a;
+  --brown2:  #3a5a28;
+  --ink:     #333333;
+  --rust:    #EE583F;
+  --rust-l:  #fde8e2;
+  --sage:    #97AA6A;
+  --sage-l:  #eaf2e0;
+  --dusty:   #A4CCC4;
+  --dusty-l: #e0f2f0;
+  --gold:    #FBB94B;
+  --gold-l:  #fff4d6;
+  --teal:    #A4CCC4;
+  --teal-l:  #e0f2f0;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Lora', Georgia, serif;
+  --font-mono:    'DM Mono', monospace;
+  --radius: 4px;
+  --border: 1.5px solid var(--parch);
+  --border-dark: 1.5px solid var(--warm);
+}
+
+body {
+  font-family: var(--font-body);
+  background: #FCF3EA;
+  color: var(--ink);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+/* subtle paper grain texture */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(100,80,50,0.015) 2px, rgba(100,80,50,0.015) 3px),
+    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(100,80,50,0.008) 40px, rgba(100,80,50,0.008) 41px);
+  pointer-events: none; z-index: 0;
+}
+
+.app { max-width: 560px; margin: 0 auto; padding: 32px 20px; position: relative; z-index: 1; }
+
+/* ── Ornamental rule ── */
+.ornament { text-align: center; font-size: 13px; color: var(--warm); letter-spacing: 8px; margin: 6px 0; }
+.rule { border: none; border-top: 1.5px solid var(--parch); margin: 8px 0; }
+.rule-double { border: none; height: 5px; border-top: 1.5px solid var(--parch); border-bottom: 1.5px solid var(--parch); margin: 8px 0; }
+
+/* ── Header ── */
+.header {
+  text-align: center; padding: 24px 20px 20px;
+  border: 1.5px solid #FFBBA6;
+  background: #FFBBA6;
+  margin-bottom: 20px;
+  position: relative;
+}
+.header::before, .header::after {
+  content: '✦';
+  position: absolute; top: 50%; transform: translateY(-50%);
+  font-size: 11px; color: #EE583F;
+}
+.header::before { left: 14px; }
+.header::after  { right: 14px; }
+
+.header-eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #333333; margin-bottom: 6px; }
+.header h1 { font-family: var(--font-display); font-size: 30px; font-weight: 700; color: var(--ink); line-height: 1.1; }
+.header h1 em { font-style: italic; color: #EE583F; }
+.header-sub { font-family: var(--font-body); font-size: 13px; color: #333333; font-style: italic; margin-top: 5px; }
+
+.streak-row { display: flex; justify-content: center; gap: 10px; margin-top: 14px; }
+.stat-pill {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  color: #333333; background: #e0f0ee;
+  border: 1.5px solid #A4CCC4; padding: 5px 14px;
+  letter-spacing: 0.5px;
+}
+
+/* ── Points card ── */
+.points-card {
+  border: 1.5px solid var(--warm); background: #333333;
+  padding: 22px 26px; margin-bottom: 20px; position: relative; overflow: hidden;
+}
+.points-card::after {
+  content: 'Pts';
+  font-family: var(--font-display); font-size: 120px; font-weight: 700;
+  color: rgba(255,255,255,0.03); position: absolute; right: -10px; bottom: -20px;
+  line-height: 1; pointer-events: none; letter-spacing: -4px;
+}
+.points-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.points-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 6px; }
+.points-num { font-family: var(--font-mono); font-size: 48px; font-weight: 500; color: var(--cream); line-height: 1; }
+.points-level { font-family: var(--font-display); font-size: 13px; font-style: italic; color: #FBB94B; margin-top: 4px; }
+.xp-wrap { margin-top: 16px; }
+.xp-meta { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.4); margin-bottom: 6px; letter-spacing: 0.5px; }
+.xp-bar { background: rgba(255,255,255,0.1); height: 3px; overflow: hidden; }
+.xp-fill { height: 100%; background: var(--gold); transition: width 0.6s ease; }
+
+/* ── Tabs ── */
+.tab-bar { display: flex; border: 1.5px solid #D9E9D9; background: #edf5ed; margin-bottom: 20px; }
+.tab {
+  flex: 1; padding: 11px 6px; text-align: center;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px;
+  text-transform: uppercase; cursor: pointer; border: none;
+  background: transparent; color: var(--brown); transition: all 0.15s;
+  border-right: 1.5px solid var(--parch); font-weight: 500;
+}
+.tab:last-child { border-right: none; }
+.tab:hover { background: #D9E9D9; color: #333333; }
+.tab.active { background: #EE583F; color: #FCF3EA; }
+
+/* ── View ── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── Section heading ── */
+.section-head {
+  display: flex; align-items: center; gap: 10px; margin: 20px 0 12px;
+}
+.section-head-title {
+  font-family: var(--font-display); font-size: 15px; font-weight: 600;
+  color: var(--ink); letter-spacing: 0.3px; white-space: nowrap;
+}
+.section-head-rule { flex: 1; border-top: 1.5px solid #D9E9D9; }
+.section-head-num { font-family: var(--font-mono); font-size: 10px; color: var(--warm); letter-spacing: 1px; }
+
+/* ── Daily summary ── */
+.daily-summary {
+  display: flex; align-items: center; gap: 16px;
+  border: 1.5px solid #D9E9D9; background: #f5ede0; padding: 14px 18px; margin-bottom: 16px;
+}
+.summary-num { font-family: var(--font-mono); font-size: 26px; font-weight: 500; color: #EE583F; line-height: 1; }
+.summary-label { font-family: var(--font-body); font-size: 11px; font-style: italic; color: var(--brown); margin-top: 2px; }
+.summary-bar-wrap { flex: 1; }
+.summary-bar { background: #D9E9D9; height: 4px; overflow: hidden; margin-bottom: 5px; }
+.summary-fill { height: 100%; background: #A4CCC4; transition: width 0.5s; }
+.summary-pct { font-family: var(--font-mono); font-size: 10px; color: var(--brown); text-align: right; letter-spacing: 0.5px; }
+
+/* ── Add row ── */
+.add-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.add-row input {
+  flex: 1; padding: 9px 13px;
+  border: var(--border); background: #FCF3EA; font-family: var(--font-body);
+  font-size: 13px; color: var(--ink); outline: none; transition: border-color 0.15s;
+}
+.add-row input:focus { border-color: var(--warm); }
+.add-row input::placeholder { color: var(--warm); font-style: italic; }
+.add-row select {
+  padding: 9px 8px; border: var(--border); background: #FCF3EA;
+  font-family: var(--font-mono); font-size: 11px; color: var(--brown);
+  outline: none; cursor: pointer; letter-spacing: 0.5px;
+}
+.add-row button {
+  padding: 9px 16px; background: #EE583F; color: #FCF3EA;
+  border: none; font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; transition: background 0.15s;
+}
+.add-row button:hover { background: #c43a25; }
+
+/* ── Room sections ── */
+.room-section { border: var(--border); background: #FCF3EA; margin-bottom: 8px; }
+.room-header {
+  display: flex; align-items: center; gap: 12px; padding: 13px 16px;
+  cursor: pointer; user-select: none; transition: background 0.12s;
+  border-bottom: 1.5px solid transparent;
+}
+.room-header:hover { background: #edf5ed; }
+.room-section.open .room-header { border-bottom-color: var(--parch); }
+.room-label-col { flex: 1; }
+.room-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--ink); }
+.room-meta { font-family: var(--font-mono); font-size: 10px; color: var(--warm); margin-top: 3px; letter-spacing: 0.5px; }
+.room-mini-bar { width: 60px; height: 3px; background: var(--parch); margin-top: 5px; overflow: hidden; }
+.room-mini-fill { height: 100%; transition: width 0.4s; }
+.room-pts-tag {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  padding: 4px 10px; border: 1.5px solid; letter-spacing: 0.5px; white-space: nowrap;
+}
+.room-chevron { font-size: 11px; color: var(--warm); transition: transform 0.2s; flex-shrink: 0; font-family: var(--font-mono); }
+.room-section.open .room-chevron { transform: rotate(180deg); }
+.room-body { display: none; padding: 10px 14px 14px; }
+.room-section.open .room-body { display: block; }
+
+/* ── Task cards ── */
+.tasks-list { display: flex; flex-direction: column; gap: 5px; margin-top: 4px; }
+.task-card {
+  display: flex; align-items: center; gap: 10px;
+  background: #f5ede0; border: 1.5px solid transparent;
+  padding: 10px 13px; cursor: pointer; transition: all 0.14s; user-select: none;
+}
+.task-card:hover { border-color: #FFBBA6; background: #fff0ea; }
+.task-card.done { opacity: 0.4; }
+.task-card.done .task-name { text-decoration: line-through; }
+.check-box {
+  width: 18px; height: 18px; border: 1.5px solid var(--warm);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.18s; font-size: 11px; color: var(--cream);
+}
+.task-card.done .check-box { background: #97AA6A; border-color: #97AA6A; }
+.task-icon { font-size: 16px; flex-shrink: 0; width: 22px; text-align: center; }
+.task-info { flex: 1; min-width: 0; }
+.task-name { font-family: var(--font-body); font-size: 13px; color: var(--ink); }
+.task-freq { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+.freq-daily    { color: #97AA6A; }
+.freq-weekly   { color: #A4CCC4; }
+.freq-monthly  { color: #FBB94B; }
+.freq-as-needed{ color: #EE583F; }
+.task-pts-tag { font-family: var(--font-mono); font-size: 10px; font-weight: 500; padding: 2px 8px; border: 1.5px solid #D9E9D9; color: #5a7a3a; white-space: nowrap; flex-shrink: 0; }
+.task-card.done .task-pts-tag { opacity: 0.5; }
+.delete-btn { background: none; border: none; font-size: 12px; cursor: pointer; color: var(--warm); padding: 2px; opacity: 0; transition: opacity 0.12s; }
+.task-card:hover .delete-btn { opacity: 1; }
+.delete-btn:hover { color: #EE583F; }
+
+/* ── Reset row ── */
+.reset-row { text-align: center; margin-top: 16px; }
+.reset-btn {
+  background: none; border: var(--border); padding: 7px 20px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--brown); cursor: pointer; transition: all 0.14s;
+}
+.reset-btn:hover { border-color: #EE583F; color: #EE583F; }
+
+/* ── Daily Challenges ── */
+.challenge-header {
+  background: #333333; padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;
+}
+.challenge-header-title { font-family: var(--font-display); font-size: 14px; color: var(--cream); font-style: italic; }
+.challenge-header-date { font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 1px; }
+
+.monthly-badge-card { border: 1.5px solid #FBB94B; background: #fff8e8; padding: 16px 18px; margin-bottom: 16px; }
+.badge-card-top { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.badge-icon-lg { font-size: 36px; line-height: 1; flex-shrink: 0; }
+.badge-meta { flex: 1; }
+.badge-title { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--ink); }
+.badge-month { font-family: var(--font-mono); font-size: 10px; color: var(--brown); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+.badge-tally { font-family: var(--font-mono); font-size: 10px; color: #EE583F; font-weight: 500; margin-top: 4px; }
+.progress-track { display: flex; align-items: center; gap: 10px; }
+.progress-dots { display: flex; gap: 4px; flex-wrap: wrap; flex: 1; }
+.dot {
+  width: 14px; height: 14px; border: 1.5px solid var(--parch);
+  background: #FCF3EA; transition: all 0.25s; flex-shrink: 0;
+}
+.dot.filled { background: #FBB94B; border-color: #FBB94B; }
+.dot.goal   { background: #EE583F; border-color: #EE583F; }
+.progress-fraction { font-family: var(--font-mono); font-size: 11px; color: var(--brown); white-space: nowrap; font-weight: 500; }
+
+.challenges-list { display: flex; flex-direction: column; gap: 8px; }
+.challenge-card {
+  border: 1.5px solid #D9E9D9; background: #f5ede0; padding: 14px 16px;
+  cursor: pointer; transition: all 0.14s; user-select: none; position: relative;
+}
+.challenge-card:hover { border-color: #FBB94B; background: #fff8e8; }
+.challenge-card.done { opacity: 0.45; }
+.challenge-card.done .ch-name { text-decoration: line-through; }
+.ch-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.ch-left { flex: 1; }
+.ch-icon { font-size: 20px; margin-bottom: 5px; }
+.ch-name { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+.ch-desc { font-family: var(--font-body); font-size: 12px; font-style: italic; color: var(--brown); margin-top: 3px; line-height: 1.4; }
+.ch-right { text-align: right; flex-shrink: 0; }
+.ch-pts { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: #EE583F; }
+.ch-pts-label { font-family: var(--font-mono); font-size: 9px; color: var(--warm); text-transform: uppercase; letter-spacing: 1px; }
+.ch-badge-prog { font-family: var(--font-mono); font-size: 9px; color: #FBB94B; margin-top: 3px; letter-spacing: 0.5px; }
+.ch-complete-stamp {
+  position: absolute; right: 14px; bottom: 12px;
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: #97AA6A; border: 1.5px solid #97AA6A;
+  padding: 2px 7px; opacity: 0; transition: opacity 0.2s;
+}
+.challenge-card.done .ch-complete-stamp { opacity: 1; }
+
+.refresh-note { text-align: center; padding: 12px; font-family: var(--font-body); font-size: 11px; font-style: italic; color: var(--warm); border-top: var(--border); margin-top: 4px; }
+
+/* ── Badges ── */
+.badges-section-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--warm); margin: 16px 0 8px; }
+.badges-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 6px; }
+.badge-cell { text-align: center; padding: 10px 4px; border: 1.5px solid #D9E9D9; background: #f5ede0; }
+.badge-cell.unlocked { border-color: #FBB94B; background: #fff8e8; }
+.badge-cell.locked { opacity: 0.42; filter: grayscale(0.6); }
+.badge-cell-icon { font-size: 24px; margin-bottom: 5px; }
+.badge-cell-name { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--brown); line-height: 1.3; }
+.badge-cell.unlocked .badge-cell-name { color: var(--brown2); font-weight: 500; }
+.badge-cell-req { font-family: var(--font-body); font-size: 10px; font-style: italic; color: var(--warm); margin-top: 2px; }
+
+/* ── Prizes ── */
+.prizes-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
+.prize-cell {
+  border: 1.5px solid #D9E9D9; background: #f5ede0; padding: 14px 10px;
+  text-align: center; cursor: default; transition: all 0.15s;
+}
+.prize-cell.affordable { border-color: #FBB94B; background: #fff8e8; cursor: pointer; }
+.prize-cell.affordable:hover { border-color: #EE583F; transform: translateY(-2px); }
+.prize-cell.redeemed { border-color: #97AA6A; background: #eaf2e0; opacity: 0.6; }
+.prize-emoji { font-size: 26px; margin-bottom: 7px; }
+.prize-name { font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.prize-cost { font-family: var(--font-mono); font-size: 11px; color: var(--brown); font-weight: 500; }
+.prize-cell.affordable .prize-cost { color: #EE583F; }
+.prize-status { font-family: var(--font-mono); font-size: 9px; color: var(--warm); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.8px; }
+.prize-cell.affordable .prize-status { color: #c4880a; }
+.prize-cell.redeemed .prize-status { color: #97AA6A; }
+
+/* ── Stats ── */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.stat-cell { border: 1.5px solid #D9E9D9; background: #f5ede0; padding: 16px; }
+.stat-label-s { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--warm); margin-bottom: 6px; }
+.stat-num { font-family: var(--font-mono); font-size: 30px; font-weight: 500; color: var(--ink); line-height: 1; }
+.stat-sub-s { font-family: var(--font-body); font-size: 11px; font-style: italic; color: var(--brown); margin-top: 4px; }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(90px);
+  background: #333333; color: #FCF3EA;
+  padding: 10px 22px; font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 1px; transition: transform 0.3s ease;
+  z-index: 999; white-space: nowrap; pointer-events: none;
+  border: 1.5px solid #FBB94B;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--parch); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <div class="header-eyebrow">Domestic Record</div>
+    <h1>The <em>Residence</em></h1>
+    <div class="header-sub">a methodical log of household order</div>
+    <div style="border-top:1.5px solid rgba(238,88,63,0.3);margin-top:14px;margin-bottom:12px;"></div>
+    <div class="streak-row">
+      <div class="stat-pill" id="streak-display">⬡ 0 DAY STREAK</div>
+      <div class="stat-pill" id="header-pts">◈ 0 PTS</div>
+    </div>
+  </div>
+
+  <div class="points-card">
+    <div class="points-top">
+      <div>
+        <div class="points-label">Sparkle Points</div>
+        <div class="points-num" id="pts-display">0</div>
+        <div class="points-level" id="pts-level">Rank I — The Uninitiated</div>
+      </div>
+    </div>
+    <div class="xp-wrap">
+      <div class="xp-meta"><span>Progress</span><span id="xp-label">0 / 100</span></div>
+      <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('tasks',this)">Tasks</button>
+    <button class="tab" onclick="switchTab('challenges',this)">Daily</button>
+    <button class="tab" onclick="switchTab('badges',this)">Badges</button>
+    <button class="tab" onclick="switchTab('prizes',this)">Prizes</button>
+    <button class="tab" onclick="switchTab('stats',this)">Record</button>
+  </div>
+
+  <!-- TASKS -->
+  <div id="view-tasks" class="view active">
+    <div class="daily-summary">
+      <div>
+        <div class="summary-num" id="summary-count">0/0</div>
+        <div class="summary-label">tasks completed</div>
+      </div>
+      <div class="summary-bar-wrap">
+        <div class="summary-bar"><div class="summary-fill" id="summary-fill" style="width:0%"></div></div>
+        <div class="summary-pct" id="summary-pct">0% complete</div>
+      </div>
+    </div>
+    <div class="add-row">
+      <input type="text" id="new-task-input" placeholder="add a custom task..." maxlength="50" />
+      <select id="new-task-room">
+        <option value="daily">Daily</option>
+        <option value="bedroom">Bedroom</option>
+        <option value="bathroom">Bathroom</option>
+        <option value="kitchen">Kitchen</option>
+        <option value="living">Living Room</option>
+      </select>
+      <button onclick="addCustomTask()">Add</button>
+    </div>
+    <div id="rooms-container"></div>
+    <div class="reset-row">
+      <button class="reset-btn" onclick="resetDay()">↺ &nbsp; Reset for New Day</button>
+    </div>
+  </div>
+
+  <!-- CHALLENGES -->
+  <div id="view-challenges" class="view">
+    <div class="challenge-header">
+      <div class="challenge-header-title">Today's Assignments</div>
+      <div class="challenge-header-date" id="challenge-date">—</div>
+    </div>
+
+    <div class="monthly-badge-card">
+      <div class="badge-card-top">
+        <div class="badge-icon-lg" id="monthly-badge-icon">🏠</div>
+        <div class="badge-meta">
+          <div class="badge-title" id="monthly-badge-title">The Devoted Resident</div>
+          <div class="badge-month" id="monthly-badge-month">Loading...</div>
+          <div class="badge-tally" id="monthly-badge-tally">0 of 20 challenges completed</div>
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-dots" id="progress-dots"></div>
+        <div class="progress-fraction" id="progress-fraction">0/20</div>
+      </div>
+    </div>
+
+    <div id="challenges-list" class="challenges-list"></div>
+    <div class="refresh-note">Challenges refresh each morning. Completions count toward your monthly badge.</div>
+  </div>
+
+  <!-- BADGES -->
+  <div id="view-badges" class="view">
+    <div class="badges-section-label">Earned</div>
+    <div class="badges-grid" id="badges-unlocked"></div>
+    <div class="badges-section-label">Locked</div>
+    <div class="badges-grid" id="badges-locked"></div>
+  </div>
+
+  <!-- PRIZES -->
+  <div id="view-prizes" class="view">
+    <div class="section-head"><div class="section-head-rule"></div><div class="section-head-title">Rewards Ledger</div><div class="section-head-rule"></div></div>
+    <div class="prizes-grid" id="prizes-list"></div>
+  </div>
+
+  <!-- STATS -->
+  <div id="view-stats" class="view">
+    <div class="section-head"><div class="section-head-rule"></div><div class="section-head-title">The Record</div><div class="section-head-rule"></div></div>
+    <div class="stats-grid" id="stats-grid"></div>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Room config ──
+const ROOMS = [
+  {id:'daily',    label:'Daily Habits',  emoji:'☀',  color:'#97AA6A', colorLight:'#eaf2e0', colorDark:'#3a5a28'},
+  {id:'bedroom',  label:'Bedroom',       emoji:'◫',  color:'#FBB94B', colorLight:'#fff8e8', colorDark:'#7a5000'},
+  {id:'bathroom', label:'Bathroom',      emoji:'◈',  color:'#A4CCC4', colorLight:'#e0f2f0', colorDark:'#2a5a56'},
+  {id:'kitchen',  label:'Kitchen',       emoji:'◉',  color:'#EE583F', colorLight:'#fde8e2', colorDark:'#8a1a00'},
+  {id:'living',   label:'Living Room',   emoji:'⬡',  color:'#FFBBA6', colorLight:'#fff0ea', colorDark:'#8a3a20'},
+];
+
+// ── Challenge pool (seeded daily) ──
+const CHALLENGE_POOL = [
+  {id:'c1',  name:'The Full Kitchen',    icon:'🍳', desc:'Complete every kitchen task on your list.',        pts:60, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='kitchen'&&!t.done).length===0},
+  {id:'c2',  name:'The Spotless Bath',   icon:'🚿', desc:'Complete every bathroom task on your list.',       pts:55, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='bathroom'&&!t.done).length===0},
+  {id:'c3',  name:'The Made Bed',        icon:'🛏', desc:'Make your bed first thing.',                       pts:20, badge_pts:1, check:s=>s.tasks.find(t=>t.id===3)?.done},
+  {id:'c4',  name:'The Tidy Threshold',  icon:'🚪', desc:'Put away all clutter.',                            pts:20, badge_pts:1, check:s=>s.tasks.find(t=>t.id===7)?.done},
+  {id:'c5',  name:'The Fresh Floor',     icon:'🌀', desc:'Sweep or vacuum any room floor.',                  pts:30, badge_pts:1, check:s=>s.tasks.filter(t=>([21,42,63,68,81].includes(t.id))&&t.done).length>0},
+  {id:'c6',  name:'The Empty Sink',      icon:'🍽', desc:'Wash all the dishes. A clear sink is a clear mind.',pts:25, badge_pts:1, check:s=>s.tasks.find(t=>t.id===1)?.done},
+  {id:'c7',  name:'The Morning Ritual',  icon:'☀', desc:'Complete all 10 daily habits.',                    pts:75, badge_pts:2, check:s=>s.tasks.filter(t=>t.room==='daily'&&!t.done).length===0},
+  {id:'c8',  name:'The Bedroom Order',   icon:'◫', desc:'Complete every bedroom task on your list.',        pts:55, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='bedroom'&&!t.done).length===0},
+  {id:'c9',  name:'The Living Standard', icon:'🛋', desc:'Complete every living room task.',                 pts:50, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='living'&&!t.done).length===0},
+  {id:'c10', name:'The Grand Tour',      icon:'🏠', desc:'Complete tasks in at least 4 different rooms.',   pts:80, badge_pts:2, check:s=>new Set(s.tasks.filter(t=>t.done).map(t=>t.room)).size>=4},
+  {id:'c11', name:'The Clean Counter',   icon:'🧽', desc:'Wipe down the kitchen counters.',                 pts:15, badge_pts:1, check:s=>s.tasks.find(t=>t.id===2)?.done},
+  {id:'c12', name:'The Stovetop Vigil',  icon:'🔥', desc:'Wipe the stovetop after cooking.',                pts:15, badge_pts:1, check:s=>s.tasks.find(t=>t.id===5)?.done},
+  {id:'c13', name:'The Dust Patrol',     icon:'🪟', desc:'Dust any room\'s surfaces.',                      pts:25, badge_pts:1, check:s=>s.tasks.filter(t=>([22,82].includes(t.id))&&t.done).length>0},
+  {id:'c14', name:'The Five-Task Day',   icon:'⭐', desc:'Complete any 5 tasks today.',                     pts:35, badge_pts:1, check:s=>s.tasks.filter(t=>t.done).length>=5},
+  {id:'c15', name:'The Ten-Task Day',    icon:'✦',  desc:'Complete any 10 tasks today.',                    pts:55, badge_pts:2, check:s=>s.tasks.filter(t=>t.done).length>=10},
+  {id:'c16', name:'The Bathroom Basics', icon:'🪥', desc:'Wipe the bathroom sink.',                         pts:10, badge_pts:1, check:s=>s.tasks.find(t=>t.id===8)?.done},
+  {id:'c17', name:'The Scrubbed Throne', icon:'🚽', desc:'Scrub the toilet.',                               pts:30, badge_pts:1, check:s=>s.tasks.find(t=>t.id===40)?.done},
+  {id:'c18', name:'The Gleaming Tub',    icon:'🛁', desc:'Clean the shower or tub.',                        pts:35, badge_pts:1, check:s=>s.tasks.find(t=>t.id===41)?.done},
+  {id:'c19', name:'The Organized Mind',  icon:'📦', desc:'Complete an organizing task this week.',          pts:40, badge_pts:1, check:s=>s.tasks.filter(t=>([23,24,25,44,50,66,67,85].includes(t.id))&&t.done).length>0},
+  {id:'c20', name:'The Deep Clean',      icon:'🧪', desc:'Complete any monthly deep-clean task.',           pts:50, badge_pts:2, check:s=>s.tasks.filter(t=>t.freq==='monthly'&&t.done).length>0},
+];
+
+// ── Monthly badge config ──
+const MONTHLY_BADGES = [
+  {month:0,  name:'The January Reclamation', icon:'❄', goal:20},
+  {month:1,  name:'The February Standard',   icon:'🌸', goal:20},
+  {month:2,  name:'The March Renewal',       icon:'🌿', goal:20},
+  {month:3,  name:'The April Order',         icon:'🌼', goal:20},
+  {month:4,  name:'The May Residence',       icon:'🌺', goal:20},
+  {month:5,  name:'The June Establishment',  icon:'☀', goal:20},
+  {month:6,  name:'The July Dominion',       icon:'🌻', goal:20},
+  {month:7,  name:'The August Vigil',        icon:'🍂', goal:20},
+  {month:8,  name:'The September Reckoning', icon:'🍁', goal:20},
+  {month:9,  name:'The October Ritual',      icon:'🕯', goal:20},
+  {month:10, name:'The November Estate',     icon:'🏠', goal:20},
+  {month:11, name:'The December Close',      icon:'⭐', goal:20},
+];
+
+const DEFAULT_TASKS = [
+  {id:1, room:'daily', name:'Wash the dishes',             icon:'🍽', pts:10, freq:'daily'},
+  {id:2, room:'daily', name:'Wipe down kitchen counters',  icon:'🧽', pts:10, freq:'daily'},
+  {id:3, room:'daily', name:'Make the bed',                icon:'🛏', pts:10, freq:'daily'},
+  {id:4, room:'daily', name:'General tidy up',             icon:'🧹', pts:10, freq:'daily'},
+  {id:5, room:'daily', name:'Wipe stovetop after cooking', icon:'🍳', pts:10, freq:'daily'},
+  {id:6, room:'daily', name:'Take out trash if full',      icon:'🗑', pts:10, freq:'daily'},
+  {id:7, room:'daily', name:'Put away clutter',            icon:'📦', pts:5,  freq:'daily'},
+  {id:8, room:'daily', name:'Wipe bathroom sink',          icon:'🪥', pts:5,  freq:'daily'},
+  {id:9, room:'daily', name:'Sweep kitchen floor',         icon:'🌀', pts:10, freq:'daily'},
+  {id:10,room:'daily', name:'Wipe & clear kitchen table',  icon:'🪑', pts:10, freq:'daily'},
+  {id:20,room:'bedroom',name:'Change bed sheets',          icon:'🛏', pts:30, freq:'weekly'},
+  {id:21,room:'bedroom',name:'Vacuum or sweep floor',      icon:'🌀', pts:25, freq:'weekly'},
+  {id:22,room:'bedroom',name:'Dust surfaces & shelves',    icon:'🪟', pts:20, freq:'weekly'},
+  {id:23,room:'bedroom',name:'Organize nightstand',        icon:'🕯', pts:15, freq:'weekly'},
+  {id:24,room:'bedroom',name:'Clear out under the bed',    icon:'🔦', pts:20, freq:'monthly'},
+  {id:25,room:'bedroom',name:'Declutter closet',           icon:'👗', pts:35, freq:'monthly'},
+  {id:26,room:'bedroom',name:'Vacuum mattress',            icon:'💤', pts:25, freq:'monthly'},
+  {id:27,room:'bedroom',name:'Wipe light switches & doorknobs',icon:'💡',pts:10,freq:'monthly'},
+  {id:28,room:'bedroom',name:'Wash curtains or blinds',    icon:'🌅', pts:30, freq:'monthly'},
+  {id:40,room:'bathroom',name:'Scrub the toilet',          icon:'🚽', pts:25, freq:'weekly'},
+  {id:41,room:'bathroom',name:'Clean shower/tub',          icon:'🚿', pts:30, freq:'weekly'},
+  {id:42,room:'bathroom',name:'Mop bathroom floor',        icon:'🪣', pts:20, freq:'weekly'},
+  {id:43,room:'bathroom',name:'Clean bathroom mirror',     icon:'🪞', pts:15, freq:'weekly'},
+  {id:44,room:'bathroom',name:'Restock toilet paper & supplies',icon:'🧻',pts:10,freq:'as-needed'},
+  {id:45,room:'bathroom',name:'Empty trash can',           icon:'🗑', pts:10, freq:'weekly'},
+  {id:46,room:'bathroom',name:'Wipe light switch & handles',icon:'💡',pts:10,freq:'weekly'},
+  {id:47,room:'bathroom',name:'Deep clean grout',          icon:'🧪', pts:40, freq:'monthly'},
+  {id:48,room:'bathroom',name:'Wash bath mat',             icon:'🛁', pts:20, freq:'weekly'},
+  {id:49,room:'bathroom',name:'Clean toothbrush holder',   icon:'🪥', pts:10, freq:'weekly'},
+  {id:50,room:'bathroom',name:'Organize under the sink',   icon:'📦', pts:25, freq:'monthly'},
+  {id:60,room:'kitchen',name:'Deep clean sink',            icon:'🚰', pts:25, freq:'weekly'},
+  {id:61,room:'kitchen',name:'Wipe down all appliances',   icon:'🫙', pts:25, freq:'weekly'},
+  {id:62,room:'kitchen',name:'Mop kitchen floor',          icon:'🪣', pts:25, freq:'weekly'},
+  {id:63,room:'kitchen',name:'Clean inside oven',          icon:'🔥', pts:45, freq:'monthly'},
+  {id:64,room:'kitchen',name:'Wipe fridge exterior',       icon:'🧊', pts:15, freq:'weekly'},
+  {id:65,room:'kitchen',name:'Clean out fridge inside',    icon:'🥗', pts:35, freq:'monthly'},
+  {id:66,room:'kitchen',name:'Organize cabinets & pantry', icon:'🗄', pts:35, freq:'monthly'},
+  {id:67,room:'kitchen',name:'Clean stovetop burners',     icon:'🍳', pts:25, freq:'weekly'},
+  {id:68,room:'kitchen',name:'Wipe cabinet fronts',        icon:'🪵', pts:20, freq:'weekly'},
+  {id:69,room:'kitchen',name:'Empty & clean trash can',    icon:'🗑', pts:20, freq:'weekly'},
+  {id:80,room:'living',name:'Vacuum sofa & cushions',      icon:'🛋', pts:25, freq:'weekly'},
+  {id:81,room:'living',name:'Vacuum or sweep the floor',   icon:'🌀', pts:25, freq:'weekly'},
+  {id:82,room:'living',name:'Dust all surfaces',           icon:'🪟', pts:20, freq:'weekly'},
+  {id:83,room:'living',name:'Wipe down TV & electronics',  icon:'📺', pts:15, freq:'weekly'},
+  {id:84,room:'living',name:'Clean windows & glass',       icon:'✨', pts:25, freq:'monthly'},
+  {id:85,room:'living',name:'Organize bookshelf or media', icon:'📚', pts:20, freq:'monthly'},
+  {id:86,room:'living',name:'Wipe light switches & handles',icon:'💡',pts:10,freq:'monthly'},
+  {id:87,room:'living',name:'Vacuum under furniture',      icon:'🔦', pts:30, freq:'monthly'},
+  {id:88,room:'living',name:'Wipe baseboards',             icon:'🪚', pts:20, freq:'monthly'},
+];
+
+const DEFAULT_PRIZES = [
+  {id:'sleep',   name:'Sleep In',        icon:'😴', cost:150,  redeemed:false},
+  {id:'movie',   name:'Movie Night',     icon:'🍿', cost:200,  redeemed:false},
+  {id:'bath',    name:'Bubble Bath',     icon:'🛁', cost:250,  redeemed:false},
+  {id:'takeout', name:'Takeout Dinner',  icon:'🍜', cost:350,  redeemed:false},
+  {id:'book',    name:'New Book',        icon:'📚', cost:500,  redeemed:false},
+  {id:'massage', name:'Spa Day',         icon:'💆', cost:600,  redeemed:false},
+  {id:'trip',    name:'Day Trip',        icon:'🚗', cost:800,  redeemed:false},
+  {id:'shopping',name:'Shopping Trip',   icon:'🛍', cost:1000, redeemed:false},
+];
+
+const ALL_BADGES = [
+  {id:'first',     name:'First Task',      icon:'✦',  req:'Complete your first task',       check:s=>s.totalTasksDone>=1},
+  {id:'five',      name:'Five Done',       icon:'⭐', req:'Complete 5 tasks',               check:s=>s.totalTasksDone>=5},
+  {id:'ten',       name:'Ten Done',        icon:'🌟', req:'Complete 10 tasks',              check:s=>s.totalTasksDone>=10},
+  {id:'fifty',     name:'Fifty Done',      icon:'🏅', req:'Complete 50 tasks total',        check:s=>s.totalTasksDone>=50},
+  {id:'daily5',    name:'Daily Devotee',   icon:'☀', req:'Complete 5 daily habits',         check:s=>(s.dailyDone||0)>=5},
+  {id:'bed10',     name:'Bedroom Order',   icon:'◫', req:'Complete 10 bedroom tasks',       check:s=>(s.bedroomDone||0)>=10},
+  {id:'bath10',    name:'Bath Authority',  icon:'◈', req:'Complete 10 bathroom tasks',      check:s=>(s.bathroomDone||0)>=10},
+  {id:'kit10',     name:'Kitchen Master',  icon:'◉', req:'Complete 10 kitchen tasks',       check:s=>(s.kitchenDone||0)>=10},
+  {id:'liv10',     name:'Living Standard', icon:'⬡', req:'Complete 10 living room tasks',   check:s=>(s.livingDone||0)>=10},
+  {id:'streak3',   name:'3 Days',          icon:'3',  req:'3-day streak',                   check:s=>s.streak>=3},
+  {id:'streak7',   name:'One Week',        icon:'7',  req:'7-day streak',                   check:s=>s.streak>=7},
+  {id:'streak30',  name:'One Month',       icon:'30', req:'30-day streak',                  check:s=>s.streak>=30},
+  {id:'pts100',    name:'100 Points',      icon:'💯', req:'Earn 100 points',                check:s=>s.points>=100},
+  {id:'pts500',    name:'500 Points',      icon:'🔑', req:'Earn 500 points',                check:s=>s.points>=500},
+  {id:'legend',    name:'The Legend',      icon:'🏆', req:'Earn 1000 points',               check:s=>s.points>=1000},
+  {id:'ch5',       name:'5 Challenges',    icon:'◆',  req:'Complete 5 daily challenges',    check:s=>(s.totalChallengesDone||0)>=5},
+  {id:'ch20',      name:'20 Challenges',   icon:'◈',  req:'Complete 20 daily challenges',   check:s=>(s.totalChallengesDone||0)>=20},
+  {id:'redeem',    name:'First Reward',    icon:'🎁', req:'Redeem a prize',                  check:s=>(s.totalRedeemed||0)>=1},
+];
+
+const LEVELS=[
+  {min:0,    name:'The Uninitiated'},
+  {min:100,  name:'The Apprentice'},
+  {min:250,  name:'The Resident'},
+  {min:500,  name:'The Devoted'},
+  {min:800,  name:'The Established'},
+  {min:1200, name:'The Legend'},
+];
+const NEXT_TH=[100,250,500,800,1200,99999];
+
+// ── State ──
+function defaultState(){
+  return {
+    points:0, streak:0, lastActiveDate:null,
+    tasks:JSON.parse(JSON.stringify(DEFAULT_TASKS)),
+    prizes:JSON.parse(JSON.stringify(DEFAULT_PRIZES)),
+    unlockedBadges:[], openRooms:['daily'],
+    totalTasksDone:0, dailyDone:0, bedroomDone:0,
+    bathroomDone:0, kitchenDone:0, livingDone:0,
+    totalRedeemed:0, nextId:300,
+    totalChallengesDone:0,
+    monthlyBadgeProgress:{},  // key: "YYYY-MM" -> badge_pts count
+    lastChallengeDate:null,
+    todayChallengeIds:[],
+    todayChallengesCompleted:{},
+  };
+}
+
+let state=load();
+function load(){try{const s=localStorage.getItem('the-residence-v1');return s?JSON.parse(s):defaultState();}catch{return defaultState();}}
+function save(){localStorage.setItem('the-residence-v1',JSON.stringify(state));}
+
+// ── Streak ──
+function checkStreak(){
+  if(!state.lastActiveDate)return;
+  const diff=Math.floor((new Date()-new Date(state.lastActiveDate))/86400000);
+  if(diff>1){state.streak=0;save();}
+}
+function markActive(){
+  const today=new Date().toDateString();
+  if(state.lastActiveDate!==today){
+    const diff=state.lastActiveDate?Math.floor((new Date()-new Date(state.lastActiveDate))/86400000):999;
+    state.streak=diff===1?state.streak+1:1;
+    state.lastActiveDate=today;save();
+  }
+}
+
+// ── Daily challenge seeding ──
+function seedChallenges(){
+  const today=new Date().toDateString();
+  if(state.lastChallengeDate===today&&state.todayChallengeIds.length===3)return;
+  // seed 3 challenges from pool based on date
+  const d=new Date();
+  const seed=(d.getFullYear()*10000)+(d.getMonth()*100)+d.getDate();
+  const pool=[...CHALLENGE_POOL];
+  const picked=[];
+  let s2=seed;
+  while(picked.length<3&&pool.length>0){
+    s2=(s2*1664525+1013904223)&0xffffffff;
+    const idx=Math.abs(s2)%pool.length;
+    picked.push(pool.splice(idx,1)[0]);
+  }
+  state.todayChallengeIds=picked.map(c=>c.id);
+  if(state.lastChallengeDate!==today){
+    state.todayChallengesCompleted={};
+  }
+  state.lastChallengeDate=today;
+  save();
+}
+
+function getLevel(pts){for(let i=LEVELS.length-1;i>=0;i--){if(pts>=LEVELS[i].min)return i;}return 0;}
+
+function updateHeader(){
+  const pts=state.points;
+  document.getElementById('pts-display').textContent=pts.toLocaleString();
+  document.getElementById('header-pts').textContent='◈ '+pts.toLocaleString()+' PTS';
+  document.getElementById('streak-display').textContent='⬡ '+state.streak+' DAY STREAK';
+  const lv=getLevel(pts);
+  document.getElementById('pts-level').textContent='Rank '+(lv+1)+' — '+LEVELS[lv].name;
+  const prev=LEVELS[lv].min,next=NEXT_TH[lv];
+  const pct=next===99999?100:Math.round(((pts-prev)/(next-prev))*100);
+  document.getElementById('xp-fill').style.width=Math.min(pct,100)+'%';
+  document.getElementById('xp-label').textContent=pts+' / '+(next===99999?'∞':next);
+}
+
+function updateSummary(){
+  const total=state.tasks.length,done=state.tasks.filter(t=>t.done).length;
+  const pct=total?Math.round((done/total)*100):0;
+  document.getElementById('summary-count').textContent=done+'/'+total;
+  document.getElementById('summary-fill').style.width=pct+'%';
+  document.getElementById('summary-pct').textContent=pct+'% complete';
+}
+
+function renderTasks(){
+  const container=document.getElementById('rooms-container');
+  container.innerHTML='';
+  ROOMS.forEach(room=>{
+    const rt=state.tasks.filter(t=>t.room===room.id);
+    const dt=rt.filter(t=>t.done);
+    const isOpen=state.openRooms.includes(room.id);
+    const avail=rt.filter(t=>!t.done).reduce((a,t)=>a+t.pts,0);
+    const pct=rt.length?Math.round((dt.length/rt.length)*100):0;
+    const sec=document.createElement('div');
+    sec.className='room-section'+(isOpen?' open':'');
+    sec.innerHTML=
+      '<div class="room-header" onclick="toggleRoom(\''+room.id+'\')">' +
+        '<div style="font-size:16px;flex-shrink:0;font-family:var(--font-mono);color:'+room.color+'">'+room.emoji+'</div>' +
+        '<div class="room-label-col">' +
+          '<div class="room-title">'+room.label+'</div>' +
+          '<div class="room-meta">'+dt.length+' / '+rt.length+' tasks</div>' +
+          '<div class="room-mini-bar"><div class="room-mini-fill" style="width:'+pct+'%;background:'+room.color+'"></div></div>' +
+        '</div>' +
+        '<div class="room-pts-tag" style="border-color:'+room.colorLight+';color:'+room.color+';background:'+room.colorLight+'">+'+avail+' pts</div>' +
+        '<div class="room-chevron">▾</div>' +
+      '</div>' +
+      '<div class="room-body"><div class="tasks-list" id="tl-'+room.id+'"></div></div>';
+    container.appendChild(sec);
+    const list=sec.querySelector('#tl-'+room.id);
+    rt.forEach(t=>{
+      const fc='freq-'+(t.freq||'weekly').replace('-','_').split(' ').join('-');
+      const fl=t.freq==='as-needed'?'as needed':t.freq;
+      const card=document.createElement('div');
+      card.className='task-card'+(t.done?' done':'');
+      card.innerHTML=
+        '<div class="check-box">'+(t.done?'✓':'')+'</div>'+
+        '<div class="task-icon">'+t.icon+'</div>'+
+        '<div class="task-info">'+
+          '<div class="task-name">'+t.name+'</div>'+
+          '<div class="task-freq '+fc+'">'+fl.toUpperCase()+'</div>'+
+        '</div>'+
+        '<div class="task-pts-tag">'+(t.done?'done':'+'+t.pts)+'</div>'+
+        '<button class="delete-btn" title="remove">✕</button>';
+      card.querySelector('.delete-btn').onclick=e=>{e.stopPropagation();deleteTask(t.id);};
+      card.onclick=()=>toggleTask(t.id);
+      list.appendChild(card);
+    });
+  });
+  updateSummary();
+  // re-evaluate challenges live
+  renderChallenges();
+}
+
+function toggleRoom(id){
+  const idx=state.openRooms.indexOf(id);
+  if(idx>-1)state.openRooms.splice(idx,1);
+  else state.openRooms.push(id);
+  save();renderTasks();
+}
+
+function toggleTask(id){
+  const t=state.tasks.find(x=>x.id===id);
+  if(!t)return;
+  if(!t.done){
+    t.done=true;state.points+=t.pts;
+    state.totalTasksDone=(state.totalTasksDone||0)+1;
+    state[t.room+'Done']=(state[t.room+'Done']||0)+1;
+    markActive();checkBadges();checkChallengeAutoComplete();
+    showToast('+'+t.pts+' pts');
+  } else {
+    t.done=false;state.points=Math.max(0,state.points-t.pts);
+    state.totalTasksDone=Math.max(0,(state.totalTasksDone||1)-1);
+    state[t.room+'Done']=Math.max(0,(state[t.room+'Done']||1)-1);
+  }
+  save();updateHeader();renderTasks();renderPrizes();renderStats();
+}
+
+function deleteTask(id){state.tasks=state.tasks.filter(x=>x.id!==id);save();renderTasks();}
+
+function addCustomTask(){
+  const inp=document.getElementById('new-task-input');
+  const sel=document.getElementById('new-task-room');
+  const name=inp.value.trim();
+  if(!name)return;
+  state.tasks.push({id:state.nextId++,room:sel.value,name,icon:'◆',pts:15,freq:'as-needed',done:false});
+  if(!state.openRooms.includes(sel.value))state.openRooms.push(sel.value);
+  inp.value='';save();renderTasks();
+  showToast('task added');
+}
+
+function resetDay(){
+  if(!confirm('Reset all tasks for a new day?'))return;
+  state.tasks.forEach(t=>t.done=false);
+  save();renderTasks();
+  showToast('new day — the residence awaits');
+}
+
+// ── Challenges ──
+function renderChallenges(){
+  seedChallenges();
+  const d=new Date();
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('challenge-date').textContent=months[d.getMonth()].toUpperCase()+' '+d.getDate()+', '+d.getFullYear();
+
+  const mb=MONTHLY_BADGES[d.getMonth()];
+  const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  const prog=state.monthlyBadgeProgress[key]||0;
+  const goal=mb.goal;
+
+  document.getElementById('monthly-badge-icon').textContent=mb.icon;
+  document.getElementById('monthly-badge-title').textContent=mb.name;
+  document.getElementById('monthly-badge-month').textContent=months[d.getMonth()].toUpperCase()+' BADGE';
+  document.getElementById('monthly-badge-tally').textContent=prog+' of '+goal+' challenge points earned';
+  document.getElementById('progress-fraction').textContent=prog+'/'+goal;
+
+  const dots=document.getElementById('progress-dots');
+  dots.innerHTML='';
+  for(let i=0;i<goal;i++){
+    const dot=document.createElement('div');
+    dot.className='dot'+(i<prog?(i===goal-1?' goal':' filled'):'');
+    dots.appendChild(dot);
+  }
+
+  const list=document.getElementById('challenges-list');
+  list.innerHTML='';
+  state.todayChallengeIds.forEach(cid=>{
+    const ch=CHALLENGE_POOL.find(x=>x.id===cid);
+    if(!ch)return;
+    const isDone=!!(state.todayChallengesCompleted&&state.todayChallengesCompleted[cid]);
+    const autoMet=ch.check(state);
+    const card=document.createElement('div');
+    card.className='challenge-card'+(isDone?' done':'');
+    card.innerHTML=
+      '<div class="ch-header">'+
+        '<div class="ch-left">'+
+          '<div class="ch-icon">'+ch.icon+'</div>'+
+          '<div class="ch-name">'+ch.name+'</div>'+
+          '<div class="ch-desc">'+ch.desc+'</div>'+
+        '</div>'+
+        '<div class="ch-right">'+
+          '<div class="ch-pts">+'+ch.pts+'</div>'+
+          '<div class="ch-pts-label">pts</div>'+
+          '<div class="ch-badge-prog">+'+ch.badge_pts+' badge pt'+(ch.badge_pts>1?'s':'')+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="ch-complete-stamp">Completed</div>';
+    if(!isDone){
+      if(autoMet){
+        card.style.borderColor='#97AA6A';
+        card.style.background='#eaf2e0';
+        card.title='Condition met — tap to claim';
+        card.onclick=()=>claimChallenge(cid);
+      } else {
+        card.onclick=()=>showToast('complete the required tasks first');
+      }
+    }
+    list.appendChild(card);
+  });
+}
+
+function claimChallenge(cid){
+  const ch=CHALLENGE_POOL.find(x=>x.id===cid);
+  if(!ch)return;
+  if(state.todayChallengesCompleted&&state.todayChallengesCompleted[cid])return;
+  if(!ch.check(state)){showToast('not yet — complete the tasks first');return;}
+  if(!state.todayChallengesCompleted)state.todayChallengesCompleted={};
+  state.todayChallengesCompleted[cid]=true;
+  state.points+=ch.pts;
+  state.totalChallengesDone=(state.totalChallengesDone||0)+1;
+  // monthly badge progress
+  const d=new Date();
+  const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  state.monthlyBadgeProgress[key]=(state.monthlyBadgeProgress[key]||0)+ch.badge_pts;
+  // check if monthly badge completed
+  const mb=MONTHLY_BADGES[d.getMonth()];
+  if(state.monthlyBadgeProgress[key]>=mb.goal&&!state.unlockedBadges.includes('monthly-'+key)){
+    state.unlockedBadges.push('monthly-'+key);
+    setTimeout(()=>showToast('Monthly badge earned: '+mb.name),700);
+  }
+  checkBadges();save();updateHeader();renderChallenges();renderPrizes();renderStats();
+  showToast('+'+ch.pts+' pts — challenge complete');
+}
+
+function checkChallengeAutoComplete(){
+  // just refresh to show green state, actual claim is manual
+  renderChallenges();
+}
+
+// ── Badges ──
+function renderBadges(){
+  const ul=document.getElementById('badges-unlocked');
+  const ll=document.getElementById('badges-locked');
+  ul.innerHTML='';ll.innerHTML='';
+  ALL_BADGES.forEach(b=>{
+    const on=state.unlockedBadges.includes(b.id);
+    const d=document.createElement('div');
+    d.className='badge-cell '+(on?'unlocked':'locked');
+    d.innerHTML='<div class="badge-cell-icon">'+b.icon+'</div><div class="badge-cell-name">'+b.name+'</div><div class="badge-cell-req">'+b.req+'</div>';
+    (on?ul:ll).appendChild(d);
+  });
+  if(!ul.children.length)ul.innerHTML='<p style="font-size:11px;font-style:italic;color:var(--warm);padding:6px 0;font-family:var(--font-body)">No badges earned yet — begin your work.</p>';
+}
+
+function checkBadges(){
+  let newest=null;
+  ALL_BADGES.forEach(b=>{
+    if(!state.unlockedBadges.includes(b.id)&&b.check(state)){
+      state.unlockedBadges.push(b.id);newest=b;
+    }
+  });
+  if(newest)setTimeout(()=>showToast('badge: '+newest.name),700);
+  renderBadges();
+}
+
+// ── Prizes ──
+function renderPrizes(){
+  const el=document.getElementById('prizes-list');
+  el.innerHTML='';
+  state.prizes.forEach(p=>{
+    const can=state.points>=p.cost&&!p.redeemed;
+    const d=document.createElement('div');
+    d.className='prize-cell'+(p.redeemed?' redeemed':can?' affordable':'');
+    d.innerHTML=
+      '<div class="prize-emoji">'+p.icon+'</div>'+
+      '<div class="prize-name">'+p.name+'</div>'+
+      '<div class="prize-cost">'+p.cost.toLocaleString()+' pts</div>'+
+      '<div class="prize-status">'+(p.redeemed?'claimed':can?'redeem':(p.cost-state.points)+' to go')+'</div>';
+    if(can)d.onclick=()=>redeemPrize(p.id);
+    el.appendChild(d);
+  });
+}
+
+function redeemPrize(id){
+  const p=state.prizes.find(x=>x.id===id);
+  if(!p||state.points<p.cost||p.redeemed)return;
+  if(!confirm('Redeem "'+p.name+'" for '+p.cost+' pts?'))return;
+  state.points-=p.cost;p.redeemed=true;
+  state.totalRedeemed=(state.totalRedeemed||0)+1;
+  checkBadges();save();updateHeader();renderPrizes();renderStats();
+  showToast(p.name+' — well deserved');
+}
+
+// ── Stats ──
+function renderStats(){
+  const el=document.getElementById('stats-grid');
+  const lv=getLevel(state.points);
+  const done=state.tasks.filter(t=>t.done).length;
+  const d=new Date();
+  const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  const mb=MONTHLY_BADGES[d.getMonth()];
+  const prog=state.monthlyBadgeProgress[key]||0;
+  const items=[
+    {label:'points',       val:state.points.toLocaleString(), sub:LEVELS[lv].name},
+    {label:'day streak',   val:state.streak,                  sub:'consecutive days'},
+    {label:'tasks done',   val:state.totalTasksDone||0,       sub:'all time'},
+    {label:'badges earned',val:state.unlockedBadges.length,   sub:'of '+ALL_BADGES.length},
+    {label:'challenges',   val:state.totalChallengesDone||0,  sub:'completed'},
+    {label:'monthly badge',val:prog+'/'+mb.goal,              sub:'this month'},
+  ];
+  el.innerHTML=items.map(i=>
+    '<div class="stat-cell">'+
+      '<div class="stat-label-s">'+i.label.toUpperCase()+'</div>'+
+      '<div class="stat-num">'+i.val+'</div>'+
+      '<div class="stat-sub-s">'+i.sub+'</div>'+
+    '</div>'
+  ).join('');
+}
+
+// ── Tabs ──
+function switchTab(tab,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('view-'+tab).classList.add('active');
+}
+
+// ── Toast ──
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ── Init ──
+checkStreak();
+updateHeader();
+renderTasks();
+renderChallenges();
+renderBadges();
+renderPrizes();
+renderStats();
+</script>
+</body>
+</html>
