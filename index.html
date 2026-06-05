@@ -230,6 +230,14 @@ body::before {
 .delete-btn:hover { color: #EE583F; }
 
 /* ── Reset row ── */
+.freq-summary-bar { display:flex; align-items:center; gap:16px; border:1.5px solid #D9E9D9; background:#f5ede0; padding:14px 18px; margin-bottom:10px; }
+.freq-summary-num { font-family:var(--font-mono); font-size:26px; font-weight:500; color:#EE583F; line-height:1; }
+.freq-summary-label { font-family:var(--font-body); font-size:11px; font-style:italic; color:#5a7a3a; margin-top:2px; }
+.freq-bar-wrap { flex:1; }
+.freq-bar { background:#D9E9D9; height:4px; overflow:hidden; margin-bottom:5px; }
+.freq-bar-fill { height:100%; transition:width 0.5s; }
+.freq-bar-pct { font-family:var(--font-mono); font-size:10px; color:#5a7a3a; text-align:right; letter-spacing:0.5px; }
+.freq-reset-note { font-family:var(--font-body); font-size:11px; font-style:italic; color:#97AA6A; text-align:center; margin-bottom:12px; }
 .reset-row { text-align: center; margin-top: 16px; }
 .reset-btn {
   background: none; border: var(--border); padding: 7px 20px;
@@ -370,27 +378,20 @@ body::before {
   </div>
 
   <div class="tab-bar">
-    <button class="tab active" onclick="switchTab('tasks',this)">Tasks</button>
-    <button class="tab" onclick="switchTab('challenges',this)">Daily</button>
+    <button class="tab active" onclick="switchTab('tasks',this)">Daily</button>
+    <button class="tab" onclick="switchTab('weekly',this)">Weekly</button>
+    <button class="tab" onclick="switchTab('monthly',this)">Monthly</button>
+    <button class="tab" onclick="switchTab('challenges',this)">Assign.</button>
     <button class="tab" onclick="switchTab('badges',this)">Badges</button>
     <button class="tab" onclick="switchTab('prizes',this)">Prizes</button>
-    <button class="tab" onclick="switchTab('stats',this)">Record</button>
   </div>
 
-  <!-- TASKS -->
+  <!-- DAILY TASKS -->
   <div id="view-tasks" class="view active">
-    <div class="daily-summary">
-      <div>
-        <div class="summary-num" id="summary-count">0/0</div>
-        <div class="summary-label">tasks completed</div>
-      </div>
-      <div class="summary-bar-wrap">
-        <div class="summary-bar"><div class="summary-fill" id="summary-fill" style="width:0%"></div></div>
-        <div class="summary-pct" id="summary-pct">0% complete</div>
-      </div>
-    </div>
+    <div class="freq-summary-bar" id="daily-summary-bar"></div>
+    <div class="freq-reset-note" id="daily-reset-note"></div>
     <div class="add-row">
-      <input type="text" id="new-task-input" placeholder="add a custom task..." maxlength="50" />
+      <input type="text" id="new-task-input" placeholder="add a custom daily task..." maxlength="50" />
       <select id="new-task-room">
         <option value="daily">Daily</option>
         <option value="bedroom">Bedroom</option>
@@ -400,9 +401,29 @@ body::before {
       </select>
       <button onclick="addCustomTask()">Add</button>
     </div>
-    <div id="rooms-container"></div>
+    <div id="rooms-daily"></div>
     <div class="reset-row">
-      <button class="reset-btn" onclick="resetDay()">↺ &nbsp; Reset for New Day</button>
+      <button class="reset-btn" onclick="resetFreq('daily')">↺ &nbsp; Reset Daily Tasks</button>
+    </div>
+  </div>
+
+  <!-- WEEKLY TASKS -->
+  <div id="view-weekly" class="view">
+    <div class="freq-summary-bar" id="weekly-summary-bar"></div>
+    <div class="freq-reset-note" id="weekly-reset-note"></div>
+    <div id="rooms-weekly"></div>
+    <div class="reset-row">
+      <button class="reset-btn" onclick="resetFreq('weekly')">↺ &nbsp; Reset Weekly Tasks</button>
+    </div>
+  </div>
+
+  <!-- MONTHLY TASKS -->
+  <div id="view-monthly" class="view">
+    <div class="freq-summary-bar" id="monthly-summary-bar"></div>
+    <div class="freq-reset-note" id="monthly-reset-note"></div>
+    <div id="rooms-monthly"></div>
+    <div class="reset-row">
+      <button class="reset-btn" onclick="resetFreq('monthly')">↺ &nbsp; Reset Monthly Tasks</button>
     </div>
   </div>
 
@@ -465,28 +486,59 @@ const ROOMS = [
   {id:'living',   label:'Living Room',   emoji:'⬡',  color:'#FFBBA6', colorLight:'#fff0ea', colorDark:'#8a3a20'},
 ];
 
+// Helper for challenge checks - uses period-aware done state
+function chDone(id) { 
+  const t = (typeof state !== 'undefined' ? state.tasks : []).find(x=>x.id===id); 
+  return t ? isTaskDone(t) : false; 
+}
+function chAllRoom(room) { 
+  const tasks = (typeof state !== 'undefined' ? state.tasks : []).filter(t=>t.room===room); 
+  return tasks.length > 0 && tasks.every(t=>isTaskDone(t)); 
+}
+
 // ── Challenge pool (seeded daily) ──
 const CHALLENGE_POOL = [
-  {id:'c1',  name:'The Full Kitchen',    icon:'🍳', desc:'Complete every kitchen task on your list.',        pts:60, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='kitchen'&&!t.done).length===0},
-  {id:'c2',  name:'The Spotless Bath',   icon:'🚿', desc:'Complete every bathroom task on your list.',       pts:55, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='bathroom'&&!t.done).length===0},
-  {id:'c3',  name:'The Made Bed',        icon:'🛏', desc:'Make your bed first thing.',                       pts:20, badge_pts:1, check:s=>s.tasks.find(t=>t.id===3)?.done},
-  {id:'c4',  name:'The Tidy Threshold',  icon:'🚪', desc:'Put away all clutter.',                            pts:20, badge_pts:1, check:s=>s.tasks.find(t=>t.id===7)?.done},
-  {id:'c5',  name:'The Fresh Floor',     icon:'🌀', desc:'Sweep or vacuum any room floor.',                  pts:30, badge_pts:1, check:s=>s.tasks.filter(t=>([21,42,63,68,81].includes(t.id))&&t.done).length>0},
-  {id:'c6',  name:'The Empty Sink',      icon:'🍽', desc:'Wash all the dishes. A clear sink is a clear mind.',pts:25, badge_pts:1, check:s=>s.tasks.find(t=>t.id===1)?.done},
-  {id:'c7',  name:'The Morning Ritual',  icon:'☀', desc:'Complete all 10 daily habits.',                    pts:75, badge_pts:2, check:s=>s.tasks.filter(t=>t.room==='daily'&&!t.done).length===0},
-  {id:'c8',  name:'The Bedroom Order',   icon:'◫', desc:'Complete every bedroom task on your list.',        pts:55, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='bedroom'&&!t.done).length===0},
-  {id:'c9',  name:'The Living Standard', icon:'🛋', desc:'Complete every living room task.',                 pts:50, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='living'&&!t.done).length===0},
-  {id:'c10', name:'The Grand Tour',      icon:'🏠', desc:'Complete tasks in at least 4 different rooms.',   pts:80, badge_pts:2, check:s=>new Set(s.tasks.filter(t=>t.done).map(t=>t.room)).size>=4},
-  {id:'c11', name:'The Clean Counter',   icon:'🧽', desc:'Wipe down the kitchen counters.',                 pts:15, badge_pts:1, check:s=>s.tasks.find(t=>t.id===2)?.done},
-  {id:'c12', name:'The Stovetop Vigil',  icon:'🔥', desc:'Wipe the stovetop after cooking.',                pts:15, badge_pts:1, check:s=>s.tasks.find(t=>t.id===5)?.done},
-  {id:'c13', name:'The Dust Patrol',     icon:'🪟', desc:'Dust any room\'s surfaces.',                      pts:25, badge_pts:1, check:s=>s.tasks.filter(t=>([22,82].includes(t.id))&&t.done).length>0},
-  {id:'c14', name:'The Five-Task Day',   icon:'⭐', desc:'Complete any 5 tasks today.',                     pts:35, badge_pts:1, check:s=>s.tasks.filter(t=>t.done).length>=5},
-  {id:'c15', name:'The Ten-Task Day',    icon:'✦',  desc:'Complete any 10 tasks today.',                    pts:55, badge_pts:2, check:s=>s.tasks.filter(t=>t.done).length>=10},
-  {id:'c16', name:'The Bathroom Basics', icon:'🪥', desc:'Wipe the bathroom sink.',                         pts:10, badge_pts:1, check:s=>s.tasks.find(t=>t.id===8)?.done},
-  {id:'c17', name:'The Scrubbed Throne', icon:'🚽', desc:'Scrub the toilet.',                               pts:30, badge_pts:1, check:s=>s.tasks.find(t=>t.id===40)?.done},
-  {id:'c18', name:'The Gleaming Tub',    icon:'🛁', desc:'Clean the shower or tub.',                        pts:35, badge_pts:1, check:s=>s.tasks.find(t=>t.id===41)?.done},
-  {id:'c19', name:'The Organized Mind',  icon:'📦', desc:'Complete an organizing task this week.',          pts:40, badge_pts:1, check:s=>s.tasks.filter(t=>([23,24,25,44,50,66,67,85].includes(t.id))&&t.done).length>0},
-  {id:'c20', name:'The Deep Clean',      icon:'🧪', desc:'Complete any monthly deep-clean task.',           pts:50, badge_pts:2, check:s=>s.tasks.filter(t=>t.freq==='monthly'&&t.done).length>0},
+  {id:'c1',  name:'The Full Kitchen',    icon:'🍳', desc:'Complete at least 4 kitchen-related tasks.',       pts:60, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='kitchen'&&isTaskDone(t)).length>=4},
+  {id:'c2',  name:'The Spotless Bath',   icon:'🚿', desc:'Complete at least 3 bathroom tasks today.',    pts:55, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='bathroom'&&isTaskDone(t)).length>=3},
+  {id:'c3',  name:'The Made Bed',        icon:'🛏', desc:'Make your bed today.',                       pts:20, badge_pts:1, check:s=>chDone(3)},
+  {id:'c4',  name:'The Tidy Threshold',  icon:'🚪', desc:'Put away all clutter.',                            pts:20, badge_pts:1, check:s=>chDone(7)},
+  {id:'c5',  name:'The Fresh Floor',     icon:'🌀', desc:'Sweep or vacuum any room floor.',                  pts:30, badge_pts:1, check:s=>[21,42,63,68,81].some(id=>chDone(id))},
+  {id:'c6',  name:'The Empty Sink',      icon:'🍽', desc:'Wash all the dishes.',pts:25, badge_pts:1, check:s=>chDone(1)},
+  {id:'c7',  name:'The Full Routine',    icon:'☀', desc:'Complete all 11 daily habits.',                    pts:75, badge_pts:2, check:s=>chAllRoom('daily')},
+  {id:'c8',  name:'The Bedroom Order',   icon:'◫', desc:'Complete at least 3 bedroom tasks today.',     pts:55, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='bedroom'&&isTaskDone(t)).length>=3},
+  {id:'c9',  name:'The Living Standard', icon:'🛋', desc:'Complete at least 3 living room tasks today.', pts:50, badge_pts:1, check:s=>s.tasks.filter(t=>t.room==='living'&&isTaskDone(t)).length>=3},
+  {id:'c10', name:'The Grand Tour',      icon:'🏠', desc:'Complete tasks in at least 4 different rooms.',   pts:80, badge_pts:2, check:s=>new Set(s.tasks.filter(t=>isTaskDone(t)).map(t=>t.room)).size>=4},
+  {id:'c11', name:'The Clean Counter',   icon:'🧽', desc:'Wipe down the kitchen counters.',                 pts:15, badge_pts:1, check:s=>chDone(2)},
+  {id:'c12', name:'The Stovetop Vigil',  icon:'🔥', desc:'Wipe the stovetop after cooking.',                pts:15, badge_pts:1, check:s=>chDone(5)},
+  {id:'c13', name:'The Dust Patrol',     icon:'🪟', desc:'Dust any room\'s surfaces.',                      pts:25, badge_pts:1, check:s=>[22,82].some(id=>chDone(id))},
+  {id:'c14', name:'The Five-Task Day',   icon:'⭐', desc:'Complete any 5 tasks today.',                     pts:35, badge_pts:1, check:s=>s.tasks.filter(t=>isTaskDone(t)).length>=5},
+  {id:'c15', name:'The Ten-Task Day',    icon:'✦',  desc:'Complete any 10 tasks today.',                    pts:55, badge_pts:2, check:s=>s.tasks.filter(t=>isTaskDone(t)).length>=10},
+  {id:'c16', name:'The Bathroom Basics', icon:'🪥', desc:'Wipe the bathroom sink.',                         pts:10, badge_pts:1, check:s=>chDone(8)},
+  {id:'c17', name:'The Scrubbed Throne', icon:'🚽', desc:'Scrub the toilet.',                               pts:30, badge_pts:1, check:s=>chDone(40)},
+  {id:'c18', name:'The Gleaming Tub',    icon:'🛁', desc:'Clean the shower or tub.',                        pts:35, badge_pts:1, check:s=>chDone(41)},
+  {id:'c19', name:'The Organized Mind',  icon:'📦', desc:'Complete an organizing task today.',          pts:40, badge_pts:1, check:s=>[23,24,25,44,50,66,67,85].some(id=>chDone(id))},
+  {id:'c20', name:'The Deep Clean',      icon:'🧪', desc:'Complete any monthly deep-clean task.',           pts:50, badge_pts:2, check:s=>s.tasks.filter(t=>t.freq==='monthly').some(t=>isTaskDone(t))},
+  {id:'c21', name:'The Tidy Wardrobe',   icon:'👗', desc:'Put all your clothes away.',                      pts:15, badge_pts:1, check:s=>chDone(11)},
+  {id:'c22', name:'The Changed Sheets',   icon:'🛏', desc:'Change your bed sheets.',                         pts:35, badge_pts:1, check:s=>chDone(20)},
+  {id:'c23', name:'The Vacuumed Room',     icon:'🌀', desc:'Vacuum or sweep the bedroom floor.',                pts:30, badge_pts:1, check:s=>chDone(21)},
+  {id:'c24', name:'The Clean Tub',         icon:'🚿', desc:'Clean the shower or tub.',                          pts:35, badge_pts:1, check:s=>chDone(41)},
+  {id:'c25', name:'The Mopped Floor',      icon:'🪣', desc:'Mop any room\'s floor.',                            pts:30, badge_pts:1, check:s=>[42,62].some(id=>chDone(id))},
+  {id:'c26', name:'The Gleaming Mirror',   icon:'🪞', desc:'Clean the bathroom mirror.',                        pts:20, badge_pts:1, check:s=>chDone(43)},
+  {id:'c27', name:'The Empty Bin',         icon:'🗑', desc:'Empty the bathroom trash.',                         pts:15, badge_pts:1, check:s=>chDone(45)},
+  {id:'c28', name:'The Washed Mat',        icon:'🛁', desc:'Wash the bath mat.',                                pts:25, badge_pts:1, check:s=>chDone(48)},
+  {id:'c29', name:'The Clean Sink',        icon:'🚰', desc:'Deep clean the kitchen sink.',                      pts:30, badge_pts:1, check:s=>chDone(60)},
+  {id:'c30', name:'The Wiped Fridge',      icon:'🧊', desc:'Wipe down the exterior of the fridge.',             pts:20, badge_pts:1, check:s=>chDone(64)},
+  {id:'c31', name:'The Polished Cabinets', icon:'🪵', desc:'Wipe down the cabinet fronts.',                     pts:25, badge_pts:1, check:s=>chDone(68)},
+  {id:'c32', name:'The Vacuumed Sofa',     icon:'🛋', desc:'Vacuum the sofa and cushions.',                     pts:30, badge_pts:1, check:s=>chDone(80)},
+  {id:'c33', name:'The Dusted Room',       icon:'🪟', desc:'Dust all surfaces in the living room.',             pts:25, badge_pts:1, check:s=>chDone(82)},
+  {id:'c34', name:'The Closet Edit',       icon:'👗', desc:'Declutter your closet.',                            pts:40, badge_pts:2, check:s=>chDone(25)},
+  {id:'c35', name:'The Cleared Fridge',    icon:'🥗', desc:'Clean out the inside of the fridge.',               pts:40, badge_pts:2, check:s=>chDone(65)},
+  {id:'c36', name:'The Oven Reckoning',    icon:'🔥', desc:'Clean the inside of the oven.',                     pts:50, badge_pts:2, check:s=>chDone(63)},
+  {id:'c37', name:'The Under Bed Report',  icon:'🔦', desc:'Clear out and clean under the bed.',                pts:25, badge_pts:1, check:s=>chDone(24)},
+  {id:'c38', name:'The Clean Grout',       icon:'🧪', desc:'Deep clean the grout in the bathroom.',             pts:45, badge_pts:2, check:s=>chDone(47)},
+  {id:'c39', name:'The Vacuumed Mattress', icon:'💤', desc:'Vacuum the mattress.',                              pts:30, badge_pts:1, check:s=>chDone(26)},
+  {id:'c40', name:'The Ordered Pantry',    icon:'🗄', desc:'Organize the cabinets and pantry.',                 pts:40, badge_pts:2, check:s=>chDone(66)},
+  {id:'c41', name:'The Clean Windows',     icon:'✨', desc:'Clean the windows and glass in the living room.',   pts:30, badge_pts:1, check:s=>chDone(84)},
 ];
 
 // ── Monthly badge config ──
@@ -516,6 +568,7 @@ const DEFAULT_TASKS = [
   {id:8, room:'daily', name:'Wipe bathroom sink',          icon:'🪥', pts:5,  freq:'daily'},
   {id:9, room:'daily', name:'Sweep kitchen floor',         icon:'🌀', pts:10, freq:'daily'},
   {id:10,room:'daily', name:'Wipe & clear kitchen table',  icon:'🪑', pts:10, freq:'daily'},
+  {id:11,room:'daily', name:'Put clothes away',            icon:'👗', pts:10, freq:'daily'},
   {id:20,room:'bedroom',name:'Change bed sheets',          icon:'🛏', pts:30, freq:'weekly'},
   {id:21,room:'bedroom',name:'Vacuum or sweep floor',      icon:'🌀', pts:25, freq:'weekly'},
   {id:22,room:'bedroom',name:'Dust surfaces & shelves',    icon:'🪟', pts:20, freq:'weekly'},
@@ -640,21 +693,40 @@ function markActive(){
 function seedChallenges(){
   const today=new Date().toDateString();
   if(state.lastChallengeDate===today&&state.todayChallengeIds.length===3)return;
-  // seed 3 challenges from pool based on date
+
+  // Build a history of recently used challenge ids (last 7 days)
+  if(!state.challengeHistory) state.challengeHistory=[];
+  const sevenDaysAgo=new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate()-7);
+  // Prune history older than 7 days
+  state.challengeHistory=state.challengeHistory.filter(e=>new Date(e.date)>=sevenDaysAgo);
+  const recentIds=new Set(state.challengeHistory.map(e=>e.id));
+
+  // Build eligible pool — exclude anything used in last 7 days
+  let pool=CHALLENGE_POOL.filter(c=>!recentIds.has(c.id));
+  // Safety fallback: if pool too small, allow oldest entries back in
+  if(pool.length<3) pool=[...CHALLENGE_POOL];
+
+  // Seed pick deterministically by date so same 3 show all day
   const d=new Date();
   const seed=(d.getFullYear()*10000)+(d.getMonth()*100)+d.getDate();
-  const pool=[...CHALLENGE_POOL];
-  const picked=[];
   let s2=seed;
-  while(picked.length<3&&pool.length>0){
+  const picked=[];
+  const poolCopy=[...pool];
+  while(picked.length<3&&poolCopy.length>0){
     s2=(s2*1664525+1013904223)&0xffffffff;
-    const idx=Math.abs(s2)%pool.length;
-    picked.push(pool.splice(idx,1)[0]);
+    const idx=Math.abs(s2)%poolCopy.length;
+    picked.push(poolCopy.splice(idx,1)[0]);
   }
+
   state.todayChallengeIds=picked.map(c=>c.id);
+
+  // Record today's picks in history
   if(state.lastChallengeDate!==today){
     state.todayChallengesCompleted={};
+    picked.forEach(c=>state.challengeHistory.push({id:c.id, date:today}));
   }
+
   state.lastChallengeDate=today;
   save();
 }
@@ -674,109 +746,176 @@ function updateHeader(){
   document.getElementById('xp-label').textContent=pts+' / '+(next===99999?'∞':next);
 }
 
-function updateSummary(){
-  const total=state.tasks.length,done=state.tasks.filter(t=>t.done).length;
-  const pct=total?Math.round((done/total)*100):0;
-  document.getElementById('summary-count').textContent=done+'/'+total;
-  document.getElementById('summary-fill').style.width=pct+'%';
-  document.getElementById('summary-pct').textContent=pct+'% complete';
+// ── Period-aware done tracking ──
+function getPeriodKey(freq) {
+  const d = new Date();
+  if (freq === 'daily') {
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+  if (freq === 'weekly' || freq === 'as-needed') {
+    const day = d.getDay() || 7;
+    const mon = new Date(d); mon.setDate(d.getDate() - day + 1);
+    return mon.getFullYear()+'-W'+String(Math.ceil(((mon-new Date(mon.getFullYear(),0,1))/86400000+1)/7)).padStart(2,'0');
+  }
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
 }
 
-function renderTasks(){
-  const container=document.getElementById('rooms-container');
-  container.innerHTML='';
-  ROOMS.forEach(room=>{
-    const rt=state.tasks.filter(t=>t.room===room.id);
-    const dt=rt.filter(t=>t.done);
-    const isOpen=state.openRooms.includes(room.id);
-    const avail=rt.filter(t=>!t.done).reduce((a,t)=>a+t.pts,0);
-    const pct=rt.length?Math.round((dt.length/rt.length)*100):0;
-    const sec=document.createElement('div');
-    sec.className='room-section'+(isOpen?' open':'');
-    sec.innerHTML=
-      '<div class="room-header" onclick="toggleRoom(\''+room.id+'\')">' +
+function isTaskDone(task) {
+  const map = state.taskDoneMap || {};
+  const entry = map[task.id];
+  if (!entry) return false;
+  return entry.period === getPeriodKey(task.freq) && entry.done;
+}
+
+function setTaskDone(taskId, freq, done) {
+  if (!state.taskDoneMap) state.taskDoneMap = {};
+  if (done) {
+    state.taskDoneMap[taskId] = { period: getPeriodKey(freq), done: true };
+  } else {
+    delete state.taskDoneMap[taskId];
+  }
+}
+
+function getFreqBarColor(freq) {
+  if (freq === 'daily') return '#97AA6A';
+  if (freq === 'weekly' || freq === 'as-needed') return '#A4CCC4';
+  return '#FBB94B';
+}
+
+function renderFreqSummary(freq) {
+  const freqs = freq === 'weekly' ? ['weekly','as-needed'] : [freq];
+  const tasks = state.tasks.filter(t => freqs.includes(t.freq));
+  const done = tasks.filter(t => isTaskDone(t)).length;
+  const total = tasks.length;
+  const pct = total ? Math.round((done/total)*100) : 0;
+  const color = getFreqBarColor(freq);
+  const el = document.getElementById(freq+'-summary-bar');
+  const note = document.getElementById(freq+'-reset-note');
+  if (!el) return;
+  const labels = {daily:'Resets each morning', weekly:'Resets each Monday', monthly:'Resets on the 1st'};
+  el.innerHTML =
+    '<div><div class="freq-summary-num">'+done+'/'+total+'</div><div class="freq-summary-label">completed this period</div></div>'+
+    '<div class="freq-bar-wrap">'+
+      '<div class="freq-bar"><div class="freq-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div>'+
+      '<div class="freq-bar-pct">'+pct+'% complete</div>'+
+    '</div>';
+  if (note) note.textContent = labels[freq] || '';
+}
+
+function renderRoomSections(freq, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  const freqs = freq === 'weekly' ? ['weekly','as-needed'] : [freq];
+  const roomsToShow = freq === 'daily' ? ROOMS : ROOMS.filter(r => r.id !== 'daily');
+  roomsToShow.forEach(room => {
+    const rt = state.tasks.filter(t => t.room === room.id && freqs.includes(t.freq));
+    if (!rt.length) return;
+    const dt = rt.filter(t => isTaskDone(t));
+    const openKey = freq+'-'+room.id;
+    const isOpen = state.openRooms.includes(openKey);
+    const avail = rt.filter(t => !isTaskDone(t)).reduce((a,t) => a+t.pts, 0);
+    const pct = rt.length ? Math.round((dt.length/rt.length)*100) : 0;
+    const sec = document.createElement('div');
+    sec.className = 'room-section'+(isOpen?' open':'');
+    sec.innerHTML =
+      '<div class="room-header" onclick="toggleRoomFreq(\'' + openKey + '\')">' +
         '<div style="font-size:16px;flex-shrink:0;font-family:var(--font-mono);color:'+room.color+'">'+room.emoji+'</div>' +
         '<div class="room-label-col">' +
           '<div class="room-title">'+room.label+'</div>' +
-          '<div class="room-meta">'+dt.length+' / '+rt.length+' tasks</div>' +
+          '<div class="room-meta">'+dt.length+' / '+rt.length+' done this period</div>' +
           '<div class="room-mini-bar"><div class="room-mini-fill" style="width:'+pct+'%;background:'+room.color+'"></div></div>' +
         '</div>' +
         '<div class="room-pts-tag" style="border-color:'+room.colorLight+';color:'+room.color+';background:'+room.colorLight+'">+'+avail+' pts</div>' +
         '<div class="room-chevron">▾</div>' +
       '</div>' +
-      '<div class="room-body"><div class="tasks-list" id="tl-'+room.id+'"></div></div>';
+      '<div class="room-body"><div class="tasks-list" id="tl-'+freq+'-'+room.id+'"></div></div>';
     container.appendChild(sec);
-    const list=sec.querySelector('#tl-'+room.id);
-    rt.forEach(t=>{
-      const fc='freq-'+(t.freq||'weekly').replace('-','_').split(' ').join('-');
-      const fl=t.freq==='as-needed'?'as needed':t.freq;
-      const card=document.createElement('div');
-      card.className='task-card'+(t.done?' done':'');
-      card.innerHTML=
-        '<div class="check-box">'+(t.done?'✓':'')+'</div>'+
+    const list = sec.querySelector('#tl-'+freq+'-'+room.id);
+    rt.forEach(t => {
+      const done = isTaskDone(t);
+      const card = document.createElement('div');
+      card.className = 'task-card'+(done?' done':'');
+      card.innerHTML =
+        '<div class="check-box">'+(done?'✓':'')+'</div>'+
         '<div class="task-icon">'+t.icon+'</div>'+
-        '<div class="task-info">'+
-          '<div class="task-name">'+t.name+'</div>'+
-          '<div class="task-freq '+fc+'">'+fl.toUpperCase()+'</div>'+
-        '</div>'+
-        '<div class="task-pts-tag">'+(t.done?'done':'+'+t.pts)+'</div>'+
+        '<div class="task-info"><div class="task-name">'+t.name+'</div></div>'+
+        '<div class="task-pts-tag">'+(done?'done':'+'+t.pts)+'</div>'+
         '<button class="delete-btn" title="remove">✕</button>';
-      card.querySelector('.delete-btn').onclick=e=>{e.stopPropagation();deleteTask(t.id);};
-      card.onclick=()=>toggleTask(t.id);
+      card.querySelector('.delete-btn').onclick = e => { e.stopPropagation(); deleteTask(t.id); };
+      card.onclick = () => toggleTask(t.id);
       list.appendChild(card);
     });
   });
-  updateSummary();
-  // re-evaluate challenges live
-  renderChallenges();
 }
 
-function toggleRoom(id){
-  const idx=state.openRooms.indexOf(id);
-  if(idx>-1)state.openRooms.splice(idx,1);
-  else state.openRooms.push(id);
-  save();renderTasks();
+function toggleRoomFreq(key) {
+  const idx = state.openRooms.indexOf(key);
+  if (idx > -1) state.openRooms.splice(idx, 1);
+  else state.openRooms.push(key);
+  save(); renderTasks();
 }
 
-function toggleTask(id){
-  const t=state.tasks.find(x=>x.id===id);
-  if(!t)return;
-  if(!t.done){
-    t.done=true;state.points+=t.pts;
-    state.totalTasksDone=(state.totalTasksDone||0)+1;
-    state[t.room+'Done']=(state[t.room+'Done']||0)+1;
-    markActive();checkBadges();checkChallengeAutoComplete();
+function renderTasks() {
+  renderFreqSummary('daily');
+  renderFreqSummary('weekly');
+  renderFreqSummary('monthly');
+  renderRoomSections('daily', 'rooms-daily');
+  renderRoomSections('weekly', 'rooms-weekly');
+  renderRoomSections('monthly', 'rooms-monthly');
+}
+
+function toggleTask(id) {
+  const t = state.tasks.find(x => x.id === id);
+  if (!t) return;
+  const done = isTaskDone(t);
+  if (!done) {
+    setTaskDone(t.id, t.freq, true);
+    state.points += t.pts;
+    state.totalTasksDone = (state.totalTasksDone||0) + 1;
+    state[t.room+'Done'] = (state[t.room+'Done']||0) + 1;
+    markActive(); checkBadges();
     showToast('+'+t.pts+' pts');
   } else {
-    t.done=false;state.points=Math.max(0,state.points-t.pts);
-    state.totalTasksDone=Math.max(0,(state.totalTasksDone||1)-1);
-    state[t.room+'Done']=Math.max(0,(state[t.room+'Done']||1)-1);
+    setTaskDone(t.id, t.freq, false);
+    state.points = Math.max(0, state.points - t.pts);
+    state.totalTasksDone = Math.max(0, (state.totalTasksDone||1) - 1);
+    state[t.room+'Done'] = Math.max(0, (state[t.room+'Done']||1) - 1);
   }
-  save();updateHeader();renderTasks();renderPrizes();renderStats();
+  save(); updateHeader(); renderTasks(); renderPrizes(); renderStats();
 }
 
-function deleteTask(id){state.tasks=state.tasks.filter(x=>x.id!==id);save();renderTasks();}
+function deleteTask(id) { state.tasks = state.tasks.filter(x => x.id !== id); save(); renderTasks(); }
 
-function addCustomTask(){
-  const inp=document.getElementById('new-task-input');
-  const sel=document.getElementById('new-task-room');
-  const name=inp.value.trim();
-  if(!name)return;
-  state.tasks.push({id:state.nextId++,room:sel.value,name,icon:'◆',pts:15,freq:'as-needed',done:false});
-  if(!state.openRooms.includes(sel.value))state.openRooms.push(sel.value);
-  inp.value='';save();renderTasks();
+function addCustomTask() {
+  const inp = document.getElementById('new-task-input');
+  const sel = document.getElementById('new-task-room');
+  const name = inp ? inp.value.trim() : '';
+  if (!name) return;
+  const roomId = sel ? sel.value : 'daily';
+  state.tasks.push({id:state.nextId++, room:roomId, name, icon:'◆', pts:15, freq:'daily', done:false});
+  const openKey = 'daily-'+roomId;
+  if (!state.openRooms.includes(openKey)) state.openRooms.push(openKey);
+  if (inp) inp.value = '';
+  save(); renderTasks();
   showToast('task added');
 }
 
-function resetDay(){
-  if(!confirm('Reset all tasks for a new day?'))return;
-  state.tasks.forEach(t=>t.done=false);
-  save();renderTasks();
-  showToast('new day — the residence awaits');
+function resetFreq(freq) {
+  const label = freq === 'daily' ? 'daily' : freq === 'weekly' ? 'weekly' : 'monthly';
+  if (!confirm('Reset all '+label+' tasks?')) return;
+  const freqs = freq === 'weekly' ? ['weekly','as-needed'] : [freq];
+  if (!state.taskDoneMap) state.taskDoneMap = {};
+  state.tasks.filter(t => freqs.includes(t.freq)).forEach(t => {
+    delete state.taskDoneMap[t.id];
+  });
+  save(); renderTasks();
+  showToast(label+' tasks reset');
 }
 
 // ── Challenges ──
 function renderChallenges(){
+  if(!document.getElementById('challenge-date')) return;
   seedChallenges();
   const d=new Date();
   const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -861,10 +1000,7 @@ function claimChallenge(cid){
   showToast('+'+ch.pts+' pts — challenge complete');
 }
 
-function checkChallengeAutoComplete(){
-  // just refresh to show green state, actual claim is manual
-  renderChallenges();
-}
+
 
 // ── Badges ──
 function renderBadges(){
@@ -952,6 +1088,11 @@ function switchTab(tab,btn){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('view-'+tab).classList.add('active');
+  if(tab==='tasks'||tab==='weekly'||tab==='monthly') renderTasks();
+  if(tab==='challenges') renderChallenges();
+  if(tab==='badges') renderBadges();
+  if(tab==='prizes') renderPrizes();
+  if(tab==='stats') renderStats();
 }
 
 // ── Toast ──
@@ -967,7 +1108,6 @@ function showToast(msg){
 checkStreak();
 updateHeader();
 renderTasks();
-renderChallenges();
 renderBadges();
 renderPrizes();
 renderStats();
